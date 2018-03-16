@@ -1,10 +1,10 @@
 const StateMonad = (st) => ({
-  runState: s => st(s)
-  
+  runState: s => st(s) ,
   map: (f) => s =>  {
     let [a,ss] = st(s)
     return [f(a),ss]
-  }
+  },
+  apply:s => st.runState(s) 
 })
 
 StateMonad.of = a => StateMonad(s => [a,s])
