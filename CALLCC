@@ -1,0 +1,5 @@
+const call_cc = lambda => cps => lambda( (...args) =>  cps(...args))
+
+const f1  = k => k('test')
+
+call_cc(f1)(val => console.log(val + '1'))
