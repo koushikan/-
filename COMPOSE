@@ -1,0 +1,28 @@
+const f1 = next => arg => next(arg)
+const f2 = next => arg => next(arg)
+const f3 = next => arg => next(arg)
+
+f2(f1) = arg => f1(arg)
+f3(f2(f1)) = arg1 => (arg => f1(arg))(arg1)  // eta变化  参数计算
+           = arg1 =>  f1(arg1)   // aerfa变化  参数名称不重要
+           = arg  =>  f1(arg)
+           
+compose
+f3(f2(f1)) 这样的叫做组合  f(g(h(1)))  f.g.h 1  
+
+compose(f,g,h)
+
+const compose = (...funcs) => {
+   return funcs.reduceRight( (f1,f2) => (...arg) => f2(f1(...arg)) )
+}
+
+一阶compose
+const f1 = a => a * 1
+const f2 = a => a * 2
+console.log(  compose(f2,f1)(1) )    
+
+
+二阶compose
+const f1 = next => arg => next(arg * 1)
+const f2 = next => arg => next(arg * 2)
+console.log(  compose(f2,f1)(a => a)(1) )
