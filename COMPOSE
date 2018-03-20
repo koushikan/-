@@ -26,3 +26,5 @@ console.log(  compose(f2,f1)(1) )
 const f1 = next => arg => next(arg * 1)
 const f2 = next => arg => next(arg * 2)
 console.log(  compose(f2,f1)(a => a)(1) )
+
+这种二阶compose是不是很熟悉? 很多中间件模式 都采用这种套路
