@@ -3,3 +3,27 @@ const call_cc = lambda => cps => lambda( (...args) =>  cps(...args))
 const f1  = k => k('test')
 
 call_cc(f1)(val => console.log(val + '1'))
+
+
+
+我们稍作修改
+const call_cc = lambda => f => cps => lambda( (...args) =>  f(...args,cps))
+
+
+const f1  = k => k('test')
+
+//一个参数，这里可以看到curry化的好处 自由的变换参数的个数 达到我们想利用搞得目的
+const Foo = (val,cps) => {
+   console.log(val + 'foo')
+   cps(val)
+}
+call_cc(f1)(Foo) -> 这样的形式 cps => lambda( (...args) =>  f(...args,cps))
+
+
+const Bar = (val,cps) => {
+   console.log(val + 'bar')
+   cps(val)
+}
+
+回到之前的 compose
+
