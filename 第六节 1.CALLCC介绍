@@ -1,12 +1,14 @@
 callcc用来解决CPS一层套一层的问题
 
+
+callcc的 写法
 const call_cc = lambda => cps => lambda( (...args) =>  cps(...args))
 
 const f1  = k => k('test')
 
 call_cc(f1)(val => console.log(val + '1'))
 
-
+将传统的将回调函数作为一个参数传入调用  的写法转化为 后调用,要牢记这种套路范式
 
 我们稍作修改
 const call_cc = lambda => f => cps => lambda( (...args) =>  f(...args,cps))
