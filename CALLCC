@@ -20,10 +20,17 @@ const Foo = (val,cps) => {
 call_cc(f1)(Foo) -> 这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
 
+
 const Bar = (val,cps) => {
-   console.log(val + 'bar')
-   cps(val)
+    console.log(val + 'bar')
+    cps(val)
 }
+    
+const next = lastresult => {
+    const f2 = k => k(lastresult + 'test2')
+    call_cc(f1)(Foo)
+}
+
 
 回到之前的 compose
 
