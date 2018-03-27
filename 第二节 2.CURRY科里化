@@ -1,0 +1,25 @@
+第一节我们讲了利用CURRY化可以将多参函数编程高阶单参函数
+
+
+const curry = (f , len = f.length) => (...args) => {
+   const sublen = args.length
+   return sublen < len ? curry((...rest) => f(...args,...rest) , len - sublen) : f(...args)
+}
+
+
+const add = (a,b) => a + b
+const curryadd = curry(add)   等价  a => b => a + b
+
+
+看待高阶函数的两种角度
+
+a => b => a + b
+
+
+函数只有一个返回值
+我们可以认为 最右边是返回值 即  a +  b, 那么函数有两个参数 a b
+我们认为第一个是参数  b => a + b是返回的函数 
+
+我们通常不关心这种区别 只关心函数的参数个数,做到思维清晰就好
+
+转载注明出处作者

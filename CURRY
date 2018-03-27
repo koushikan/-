@@ -1,5 +1,0 @@
-CURRY
-const curry = (f , len = f.length) => (...args) => {
-   const sublen = args.length
-   return sublen < len ? curry((...rest) => f(...args,...rest) , len - sublen) : f(...args)
-}
