@@ -39,15 +39,19 @@ const Bar = (val,cps) => {
 call_cc(f)(Bar)   这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
 
-所以令 const bind = call_cc(f) , unit = x -> x
-compose(call_cc(f)(Foo), call_cc(f)(Bar),...)
+所以令
+      const unit  = f             = a => k => k(a),  
+      const bind  = call_cc(unit) = f => cps => unit( (...args) =>  f(...args,cps)), 
+      const id                    = x => x 
+
+compose(call_cc(unit)(Foo), call_cc(unit)(Bar),...)
 compose(bind(Foo), bind(Bar),...)
 
 
 compose(bind(Foo), bind(Bar),...)(x -> x)('init')
 
 
-const applyInit = compose(bind(Foo), bind(Bar),...)(unit)
+const applyInit = compose(bind(Foo), bind(Bar),...)(id)
 applyInit('init')
 这样我们就解决了回调地狱
 
