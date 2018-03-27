@@ -1,3 +1,5 @@
+....未开始
+
 const StateMonad = (st) => ({
   runState: s => st(s) ,
   map: (f) => s =>  {
@@ -7,3 +9,7 @@ const StateMonad = (st) => ({
 })
 
 StateMonad.of = a => StateMonad(s => [a,s])
+
+....
+
+
