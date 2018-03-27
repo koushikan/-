@@ -39,5 +39,6 @@ f3(f2(f1)) = arg1 => (arg => f1(arg * 2))(arg1 * 3)  // Beta-变换  应用参�
 console.log(  compose(f2,f1)(a => a)(1) )
 这种二阶compose是不是很熟悉? 很多中间件模式 都采用这种套路
 
+转载注明出处作者koushikan
 
 
