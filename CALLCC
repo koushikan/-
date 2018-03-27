@@ -1,3 +1,5 @@
+callcc用来解决CPS一层套一层的问题
+
 const call_cc = lambda => cps => lambda( (...args) =>  cps(...args))
 
 const f1  = k => k('test')
@@ -8,29 +10,44 @@ call_cc(f1)(val => console.log(val + '1'))
 
 我们稍作修改
 const call_cc = lambda => f => cps => lambda( (...args) =>  f(...args,cps))
-
-
-const f1  = k => k('test')
+const f  = k => a => k(a)
 
 //一个参数，这里可以看到curry化的好处 自由的变换参数的个数 达到我们想利用搞得目的
 const Foo = (val,cps) => {
    console.log(val + 'foo')
-   cps(val)
+   cps(val)  //cps 通用形式  x => x 因为val的修改我们抽到Foo里来了
 }
-call_cc(f1)(Foo) -> 这样的形式 cps => lambda( (...args) =>  f(...args,cps))
+call_cc(f)(Foo) -> 是这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
+
+const withcps = call_cc(f)(Foo)(x => x)
+
+withcps('init')
+
+回顾之前章节 二阶compose 的形式  next => arg => next(arg)  可以将上一函数结果应用到下一函数的参数
+
+call_cc(f)(Foo) 的形式 cps => lambda( (...args) =>  f(...args,cps))
+lambda演算变形         cps => arg => lambda( (...args) =>  f(...args,cps))(arg)
+符合二阶compose形式
 
 
 const Bar = (val,cps) => {
     console.log(val + 'bar')
     cps(val)
 }
-    
-const next = lastresult => {
-    const f2 = k => k(lastresult + 'test2')
-    call_cc(f1)(Foo)
-}
+   //依赖上一层结果，我们立马想到compose 2阶这样就有返回值了 
+call_cc(f)(Bar)   这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
 
-回到之前的 compose
+所以令 const bind = call_cc(f) , unit = x -> x
+compose(call_cc(f)(Foo), call_cc(f)(Bar),...)
+compose(bind(Foo), bind(Bar),...)
+
+
+compose(bind(Foo), bind(Bar),...)(x -> x)('init')
+
+
+const applyInit = compose(bind(Foo), bind(Bar),...)(unit)
+applyInit('init')
+这样我们就解决了回调地狱
 
