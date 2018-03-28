@@ -9,9 +9,9 @@
 
 
 compose
-f3(f2(f1)) 这样的叫做函数组合  f(g(h(1)))  f.g.h 1  
+f3(f2(f1(x))) 这样的叫做函数组合  f(g(h(1)))  f.g.h 1  
 
-compose(f,g,h)
+compose(f,g,h)(x)
 
 const compose = (...funcs) => {
    return funcs.reduceRight( (f1,f2) => (...arg) => f2(f1(...arg)) )
@@ -24,18 +24,28 @@ console.log(  compose(f2,f1)(1) )    //f2(f1(1))
 
 
 二阶compose  下函数的参数是上一函数传递进来的
-
-
 const f1 = next => arg => next(arg * 1)
 const f2 = next => arg => next(arg * 2)
 const f3 = next => arg => next(arg * 3)
 
-f2(f1) = arg => f1(arg * 2)
-f3(f2(f1)) = arg1 => (arg => f1(arg * 2))(arg1 * 3)  // Beta-变换  应用参数带入计算
-           = arg1 =>  f1(arg1 * 3 * 2)               // Alpha变化  参数名称不重要
-           = arg  =>  f1(arg * 3 * 2)
-           
-           
+这种compose的一般式是 next =>  f2(f1(next)) 这个结论需要牢记
+
+f2 . f1 = next =>  f2(f1(next))                    // Beta-变换  应用参数带入计算(f1(...arg) 带入f2)
+        = next =>  arg => f1(next)(arg * 2)        // Beta-变换 
+        
+        观察形式  又符合 f的基本形式 两个参数，可以继续递推 next => arg => ..
+
+f3 . (f2 .f1) =  next =>  f3((f2 .f1)(next))   // Beta-变换  应用参数带入计算
+              =  next =>  f3(arg2 => f1(next)(arg2 * 2)) //Beta-变换 和Eta变换
+              =  next =>  arg3 => (arg2 => f1(next)(arg2 * 2))(arg3 * 3)  // //Beta-变换
+              =  next =>  arg3 => f1(next)(arg3 * 3 * 2))     //Alpha变化  参数名不重要  
+              =  next =>  arg => f1(next)(arg * 3 * 2))
+              
+              
+              =  next =>  arg => next(arg * 3 * 2 * 1))
+        观察形式  又符合 f的基本形式 两个参数   
+                                                         
+                   
 console.log(  compose(f2,f1)(a => a)(1) )
 这种二阶compose是不是很熟悉? 很多中间件模式 都采用这种套路
 
