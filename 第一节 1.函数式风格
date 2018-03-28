@@ -35,7 +35,7 @@ multi2是一个参数了 可以作为函数组合的成员了
 compose(multi2,add2,f)(1)
 
 
-通常都会提供curry函数，将多参函数 编程 高阶函数，反之有uncurry函数
+通常都会提供curry函数，将多参函数 变成 高阶单参函数，反之有uncurry函数
 compose 和 curry的详解,请继续阅读
 
 转载注明出处作者koushikan
