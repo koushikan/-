@@ -9,13 +9,11 @@ const Applicative = f => ({
 一个包住值的Functor  我们叫fa, 用map f来改变容器里的内容，这个f是不在容器里的 
 如果想将包在容器里的函数 拿出来 应用到Functor上，我们定义这种操作叫ap
 
-ap: fa => fa.map(f)       //返回的是Functor
+ap: fa => fa.map(f) 
 
 
 const Applicative = f => ({
    map : func => Applicative(func(f)),
-   ap: fa => fa.map(f),
+   ap: fa => fa.map(f)
 })
 
-应用map 始终包含在容器中
-如果
