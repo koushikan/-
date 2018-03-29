@@ -1,1 +1,8 @@
 
+我们用Functor来包住值, 函数式中  函数当做普通值，也能够被包住
+Functor 用map将值暴露出去,  将包住的函数暴露出去的方法我们叫做 ap 
+包住函数的容器我们叫做Applicative
+
+const Applicative = f => ({
+   ap: fa => fa.map(f)
+})
