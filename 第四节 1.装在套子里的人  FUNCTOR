@@ -21,13 +21,16 @@ map作用后的结果是 [f(a),f(b)]
 x表示数组的第一个数  xs表示剩余数组成的数组
 
 看看下面这段JS代码
-const map = f => xxs => {
-  const [x,xs] = xxs
-  if(!xs) return [f(x)]
-  return [f(x),map(f)(xs)]
-}
-console.log(map(a => a * 2)([1,[2]]))
 
+const map = f => xxs => {
+  const [x,...xs] = xxs
+  if(xs.length <= 0) return [f(x)]
+  return [].concat(f(x)).concat(map(f)(xs))
+}
+console.log(map(a => a * 2)([1,2]))
+
+将数组 变成x:xs 的结构 js代码 [x,...xs] = xxs
+会大大方便我们做递归运算
 
 回顾下of 和 map
 
