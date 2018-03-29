@@ -1,8 +1,21 @@
 
-我们用Functor来包住值, 函数式中  函数当做普通值，也能够被包住
-Functor 用map将值暴露出去,  将包住的函数暴露出去的方法我们叫做 ap 
-包住函数的容器我们叫做Applicative
+我们用Functor来包住值, 函数式中  函数当做普通值，也能够被包住, 包住函数的容器我们叫做Applicative
+Functor 用map将值暴露出去,  Applicative也是用 map 
 
 const Applicative = f => ({
-   ap: fa => fa.map(f)
+   map : func => Applicative(func(f))
 })
+
+一个包住值的Functor  我们叫fa, 用map f来改变容器里的内容，这个f是不在容器里的 
+如果想将包在容器里的函数 拿出来 应用到Functor上，我们定义这种操作叫ap
+
+ap: fa => fa.map(f)       //返回的是Functor
+
+
+const Applicative = f => ({
+   map : func => Applicative(func(f)),
+   ap: fa => fa.map(f),
+})
+
+应用map 始终包含在容器中
+如果
