@@ -12,25 +12,27 @@ call_cc(f1)(val => console.log(val + '1'))
 
 我们稍作修改
 const call_cc = lambda => f => cps => lambda( (...args) =>  f(...args,cps))
-const f  = k => a => k(a)
+const l  = k => a => k(a)
 
 //一个参数，这里可以看到curry化的好处 自由的变换参数的个数 达到我们想利用搞得目的
 const Foo = (val,cps) => {
    console.log(val + 'foo')
    cps(val)  //cps 通用形式  x => x 因为val的修改我们抽到Foo里来了
 }
-call_cc(f)(Foo) -> 是这样的形式 cps => lambda( (...args) =>  f(...args,cps))
+call_cc(l)(Foo) -> 是这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
 
-const withcps = call_cc(f)(Foo)(x => x)
+const withcps = call_cc(l)(Foo)(x => x)
 
 withcps('init')
 
 回顾之前章节 二阶compose 的形式  next => arg => next(arg)  可以将上一函数结果应用到下一函数的参数
 
-call_cc(f)(Foo) 的形式 cps => lambda( (...args) =>  f(...args,cps))
+call_cc(l)(Foo) 的形式 cps => lambda( (...args) =>  f(...args,cps))
 lambda演算变形         cps => arg => lambda( (...args) =>  f(...args,cps))(arg)
-符合二阶compose形式
+                                 =>  f(arg,cps) //只要在f里调用cps()  
+                                 =>  cps('xx)
+                       符合二阶compose形式 next => arg => next(xx)
 
 
 const Bar = (val,cps) => {
@@ -42,7 +44,7 @@ call_cc(f)(Bar)   这样的形式 cps => lambda( (...args) =>  f(...args,cps))
 
 
 所以令
-      const unit  = f             = a => k => k(a),  
+      const unit  = l             = k => a => k(a),  
       const bind  = call_cc(unit) = f => cps => unit( (...args) =>  f(...args,cps)), 
       const id                    = x => x 
 
